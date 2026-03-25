@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Presentación Interactiva de Ética - ITMA</title>
+
+    <!-- Fuentes elegantes y legibles -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+   
+
+    <style>
+
+        /* --- VARIABLES Y TEMA --- */
+
+        :root {
+
+            --bg-main: #0B132B;
+
+            --bg-card: #1C2541;
+
+            --accent-gold: #D4AF37;
+
+            --accent-hover: #b5952f;
+
+            --text-light: #F8F9FA;
+
+            --text-muted: #ADB5BD;
+
+            --divider: rgba(255, 255, 255, 0.1);
+
+            --danger: #ef4444;
+
+            --success: #22c55e;
+
+            --toxic: #f97316;
+
+        }
+
+
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+
+
+        body {
+
+            background-color: #050814;
+
+            color: var(--text-light);
+
+            font-family: 'Inter', sans-serif;
+
+            overflow: hidden;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            height: 100vh;
+
+        }
+
+
+
+        /* --- CONTENEDOR DE SLIDES --- */
+
+        #presentation-container {
+
+            position: relative;
+
+            width: 1280px;
+
+            height: 720px;
+
+            background-color: var(--bg-main);
+
+            border-radius: 8px;
+
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+
+            border-top: 6px solid var(--accent-gold);
+
+            overflow: hidden;
+
+        }
+
+
+
+        #presentation-container::before {
+
+            content: '';
+
+            position: absolute;
+
+            top: 0; left: 0; right: 0; bottom: 0;
+
+            background-image: url('data:image/svg+xml;utf8,<svg width="20" height="20" xmlns="Et"><circle cx="2" cy="2" r="1" fill="rgba(255,255,255,0.03)"/></svg>');
+
+            z-index: 0; pointer-events: none;
+
+        }
+
+
+
+        .slide {
+
+            position: absolute;
+
+            top: 0; left: 0; width: 100%; height: 100%;
+
+            padding: 60px 80px;
+
+            display: flex; flex-direction: column; justify-content: center;
+
+            opacity: 0; visibility: hidden;
+
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+
+            transform: translateY(20px); z-index: 1;
+
+        }
+
+
+
+        .slide.active { opacity: 1; visibility: visible; transform: translateY(0); z-index: 2; }
+
+
+
+        /* --- CONTROLES --- */
+
+        .controls {
+
+            position: absolute; bottom: 30px; right: 40px; z-index: 100;
+
+            display: flex; gap: 15px; align-items: center;
+
+        }
+
+
+
+        .btn-nav {
+
+            background-color: var(--bg-card); border: 1px solid var(--accent-gold);
+
+            color: var(--accent-gold); width: 50px; height: 50px; border-radius: 50%;
+
+            cursor: pointer; font-size: 20px; transition: all 0.3s ease;
+
+            display: flex; justify-content: center; align-items: center;
+
+        }
+
+
+
+        .btn-nav:hover { background-color: var(--accent-gold); color: var(--bg-main); transform: scale(1.1); }
+
+
+
+        .slide-counter { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--text-muted); min-width: 60px; text-align: center; }
+
+
+
+        /* --- TIPOGRAFÍA Y ESTRUCTURA --- */
+
+        h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--text-light); }
+
+        h1 { font-size: 52px; line-height: 1.2; margin-bottom: 25px; }
+
+        h2.slide-title { font-size: 42px; margin-bottom: 30px; border-bottom: 2px solid var(--divider); padding-bottom: 15px; width: 100%; }
+
+        h3 { font-size: 26px; margin-bottom: 15px; color: var(--accent-gold); }
+
+        h1 span, h2 span { color: var(--accent-gold); font-style: italic; }
+
+        p, li { font-size: 18px; line-height: 1.6; font-weight: 300; margin-bottom: 15px; }
+
+        ul { padding-left: 20px; list-style-type: square; color: var(--accent-gold); }
+
+        ul span { color: var(--text-light); }
+
+
+
+        .presenter-badge {
+
+            position: absolute; top: 30px; right: 40px; background-color: var(--bg-card);
+
+            border: 1px solid var(--accent-gold); color: var(--accent-gold);
+
+            padding: 8px 20px; border-radius: 30px; font-size: 14px; font-weight: 600;
+
+            display: flex; align-items: center; gap: 10px; z-index: 10;
+
+        }
+
+
+
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: 100%; align-items: center;}
+
+       
+
+        .quote-box {
+
+            background: rgba(255,255,255,0.03); border-left: 4px solid var(--accent-gold);
+
+            padding: 20px; margin-top: 15px; border-radius: 0 8px 8px 0;
+
+        }
+
+
+
+        .interactive-btn {
+
+            background: transparent; border: 2px solid var(--accent-gold); color: var(--accent-gold);
+
+            padding: 10px 20px; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 600;
+
+            border-radius: 4px; cursor: pointer; transition: all 0.3s; margin-top: 10px; display: inline-flex; align-items: center; gap: 8px;
+
+        }
+
+        .interactive-btn:hover { background: var(--accent-gold); color: var(--bg-main); }
+
+        .interactive-btn.danger { border-color: var(--danger); color: var(--danger); }
+
+        .interactive-btn.danger:hover { background: var(--danger); color: white; }
+
+
+
+        /* IMÁGENES */
+
+        .img-container {
+
+            width: 100%; height: 350px; background: var(--bg-card); border-radius: 8px;
+
+            overflow: hidden; border: 1px solid var(--divider); display: flex; align-items: center; justify-content: center;
+
+            position: relative;
+
+        }
+
+        .img-container img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.85); transition: filter 0.5s ease; }
+
+
+
+        /* --- INTERACTIVIDAD ESPECÍFICA --- */
+
+
+
+        /* 3.1.1 Contador */
+
+        .big-number { font-size: 130px; font-family: 'Playfair Display'; color: var(--text-light); line-height: 1; text-align: center;}
+
+
+
+        /* 3.1.2 Revelador Transgénico */
+
+        .reveal-container { position: relative; cursor: pointer; border-radius: 8px; overflow: hidden;}
+
+        .reveal-overlay {
+
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+
+            background: rgba(239, 68, 68, 0.9); display: flex; flex-direction: column; justify-content: center; align-items: center;
+
+            color: white; opacity: 0; transition: opacity 0.4s ease; padding: 20px; text-align: center; z-index: 10;
+
+        }
+
+        .reveal-container:hover .reveal-overlay { opacity: 1; }
+
+
+
+        /* 3.1.3 Escáner de Plagio */
+
+        .doc-scanner {
+
+            background: #fff; color: #333; padding: 20px; border-radius: 4px; height: 200px;
+
+            position: relative; overflow: hidden; font-family: monospace; font-size: 12px; line-height: 1.2;
+
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+
+        }
+
+        .scan-line {
+
+            position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--danger);
+
+            box-shadow: 0 0 10px var(--danger); display: none; z-index: 5;
+
+        }
+
+        .scan-line.animating { display: block; animation: scanAnim 2s linear forwards; }
+
+        @keyframes scanAnim { 0% { top: 0; } 100% { top: 100%; } }
+
+        .plagio-stamp {
+
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-15deg) scale(5);
+
+            color: var(--danger); border: 4px solid var(--danger); padding: 10px; font-size: 24px; font-weight: bold;
+
+            text-transform: uppercase; border-radius: 8px; opacity: 0; transition: all 0.3s ease; z-index: 10;
+
+        }
+
+        .plagio-stamp.show { opacity: 1; transform: translate(-50%, -50%) rotate(-15deg) scale(1); }
+
+
+
+        /* 3.2.1 Tarjetas Flip */
+
+        .flip-cards-container { display: flex; gap: 20px; width: 100%; justify-content: space-between; }
+
+        .flip-card { background-color: transparent; width: 100%; height: 300px; perspective: 1000px; flex: 1; cursor: pointer;}
+
+        .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; }
+
+        .flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
+
+        .flip-card-front, .flip-card-back {
+
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+
+            border-radius: 8px; padding: 25px; display: flex; flex-direction: column; justify-content: center;
+
+        }
+
+        .flip-card-front { background-color: var(--bg-card); border-top: 3px solid var(--accent-gold); }
+
+        .flip-card-front i { font-size: 40px; color: var(--accent-gold); margin-bottom: 20px; }
+
+        .flip-card-back { background-color: var(--accent-gold); color: var(--bg-main); transform: rotateY(180deg); }
+
+
+
+        /* 3.2.2 Terminal IA */
+
+        .ai-terminal {
+
+            background: #09090b; border: 1px solid #333; border-radius: 8px; padding: 20px;
+
+            font-family: monospace; color: #39ff14; height: 150px; overflow-y: auto; margin-top: 15px;
+
+        }
+
+
+
+        /* 3.3 Decisión Ética */
+
+        .dilemma-box { text-align: center; padding: 20px; background: var(--bg-card); border-radius: 8px; border: 1px solid var(--divider); }
+
+        #decision-result { margin-top: 20px; font-weight: bold; font-size: 20px; min-height: 60px; display: flex; align-items: center; justify-content: center;}
+
+
+
+        /* 3.4 Acordeón UMAI */
+
+        .accordion-item { border-bottom: 1px solid var(--divider); padding: 12px 0; }
+
+        .accordion-header { cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--accent-gold); font-weight: 600; font-size: 18px; }
+
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; color: var(--text-muted); margin-top: 0; font-size: 16px;}
+
+        .accordion-content.open { max-height: 150px; margin-top: 10px; }
+
+
+
+        /* 3.5 Río Sonora Simulación */
+
+        .river-container { width: 100%; height: 200px; border-radius: 8px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;}
+
+        .river-container img { position: absolute; top:0; left:0; width: 100%; height: 100%; object-fit: cover; z-index: 1; transition: filter 2s ease; }
+
+        .river-container.toxic img { filter: sepia(100%) hue-rotate(-50deg) saturate(500%) brightness(0.7); }
+
+        .river-stats { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.8); padding: 5px 10px; border-radius: 4px; font-family: monospace; font-size: 16px; z-index: 10;}
+
+
+
+    </style>
+
+</head>
+
+<body>
+
+
+
+<div id="presentation-container">
+
+   
+
+    <!-- Controles Globales -->
+
+    <div class="controls">
+
+        <button class="btn-nav" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
+
+        <div class="slide-counter"><span id="current-slide-num">1</span> / 12</div>
+
+        <button class="btn-nav" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
+
+    </div>
+
+
+
+    <!-- Slide 1: Portada -->
+
+    <div class="slide active" id="slide-1">
+
+        <div class="presenter-badge"><i class="fa-solid fa-users"></i> Equipo 2</div>
+
+        <div style="text-align: center;">
+
+            <h1>Análisis de la <span>Ética</span> en el Ejercicio Científico y Tecnológico</h1>
+
+            <p style="font-size: 22px; color: var(--text-muted);">Ejemplos Reales y su Impacto en México</p>
+
+           
+
+            <div style="background: var(--bg-card); padding: 30px; margin-top: 40px; display: inline-block; border-left: 4px solid var(--accent-gold); text-align: left; border-radius: 0 8px 8px 0;">
+
+                <p><strong>Institución:</strong> Instituto Tecnológico de Milpa Alta (Sistemas)</p>
+
+                <p><strong>Profesora:</strong> Christhian Mara Limon Mendoza</p>
+
+                <p><strong>Equipo:</strong> Osorio Gregorio Edwin W. | Barbosa Martínez Eduardo D. | Serralde Enrique E.</p>
+
+            </div>
+
+            <br>
+
+            <button class="interactive-btn" style="margin-top: 40px;" onclick="nextSlide()">Comenzar <i class="fa-solid fa-play"></i></button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Slide 2: Intro (Edwin) -->
+
+    <div class="slide" id="slide-2">
+
+        <div class="presenter-badge"><i class="fa-solid fa-microphone-lines"></i> Expone: Edwin W.</div>
+
+        <h2 class="slide-title">Introducción y <span>Contexto</span></h2>
+
+        <div class="two-column">
+
+            <div>
+
+                <h3>¿Por qué importa la ética?</h3>
+
+                <p>A veces creemos que la ciencia o el código son "neutrales". Falso. Todo lo que construimos afecta a alguien.</p>
+
+                <ul>
+
+                    <li><span><strong>Nuestras decisiones pesan:</strong> Un sistema o invento puede ayudar a miles o arruinarles la vida.</span></li>
+
+                    <li><span><strong>Es el freno de emergencia:</strong> Nos obliga a pensar "¿Debería hacer esto?" antes de cometer un error irreparable.</span></li>
+
+                </ul>
+
+            </div>
+
+            <div class="img-container">
+
+                <img src="ETica1.jpg" alt="Balanza de la justicia y leyes">
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Slide 3: Ciencia 3.1 (Edwin) INTERACTIVO -->
+
+    <div class="slide" id="slide-3">
+
+        <div class="presenter-badge"><i class="fa-solid fa-microphone-lines"></i> Expone: Edwin W.</div>
+
+        <h2 class="slide-title">Ética en la <span>Ciencia</span> (3.1)</h2>
+
+        <div class="two-column">
+
+            <div>
+
+                <h3>El problema del dinero y la política</h3>
+
+                <p><strong>Caso en México: CONAHCYT</strong></p>
+
+                <div class="quote-box" id="conahcyt-box">
+
+                    <p style="color: var(--success); font-weight: bold;"><i class="fa-solid fa-microscope"></i> Ciencia Libre</p>
+
+                    <p>Los científicos investigan problemas reales buscando la verdad.</p>
+
+                </div>
+
+                <button class="interactive-btn danger" style="margin-top: 20px;" onclick="toggleCiencia()">Simular Presión Política</button>
+
+                <p style="font-size: 14px; margin-top: 10px; color: var(--text-muted);">Dale clic para ver qué pasa cuando el gobierno condiciona el presupuesto.</p>
+
+            </div>
+
+            <div class="img-container">
+
+                <img src="Científicos-y-políticos.gif" alt="Investigador en laboratorio científico">
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Slide 4: Faltas 3.1.1 (Edwin) INTERACTIVO -->
+
+    <div class="slide" id="slide-4">
+
+        <div class="presenter-badge"><i class="fa-solid fa-microphone-lines"></i> Expone: Edwin W.</div>
+
+        <h2 class="slide-title">Faltas en <span>Investigación</span> (3.1.1)</h2>
+
+        <div class="two-column">
+
+            <div style="text-align: center;">
+
+                <div class="big-number"><span id="faltas-counter">0</span>%</div>
+
+                <p style="color: var(--accent-gold); font-size: 24px; font-weight: bold;">de Investigadores</p>
+
+                <button class="interactive-btn" onclick="runCounter()">Ver Cifra de Trampas</button>
+
+            </div>
+
+            <div>
+
+                <h3>"Publicar o Morir"</h3>
+
+                <p>Un estudio en México reveló que casi la mitad de los investigadores admite haber cometido faltas éticas solo para no perder sus becas (como las del SNI).</p>
+
+                <ul>
+
+                    <h3>¿Que hacen mal?</h3>
+
+                    <li><span><strong style="color: var(--danger);">Robar ideas: </strong> Plagio o inventar datos de experimentos que nunca hicieron.</span></li>
+
+                    <li><span><strong style="color: var(--danger);">Explotación: </strong>Abusar de los alumnos de maestría poniéndolos a trabajar gratis.</span></li>
+
+                    <li><span><strong style="color: var(--accent-gold);">Impacto: </strong>La ciencia se vuelve un trámite falso y la gente deja de confiar en los científicos.</span></li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Slide 5: Límites 3.1.2 (Eduardo) INTERACTIVO -->
+
+    <div class="slide" id="slide-5">
+
+        <div class="presenter-badge"><i class="fa-solid fa-microphone-lines"></i> Expone: Eduardo D.</div>
+
+        <h2 class="slide-title">Límites y <span>Decisiones</span> (3.1.2)</h2>
+
+        <div class="two-column">
+
+            <div>
+
+                <h3>No todo lo que se puede, se debe</h3>
+
+                <p><strong>Caso: Maíz Transgénico en México</strong></p>
+
+                <ul>
+
+                    <li><span><strong style="color: var(--danger);">El Problema:</strong> Empresas forzando semillas modificadas en el centro de origen del maíz.</span></li>
+
+                    <li><span><strong style="color: var(--accent-gold);">El Impacto:</strong> Contaminación genética irreversible por avaricia corporativa.</span></li>
+
+                </ul>
+
+                <p style="font-size: 14px; margin-top: 20px; color: var(--text-muted);"><i class="fa-solid fa-hand-pointer"></i> Pasa el mouse sobre el maíz sano para ver el impacto corporativo.</p>
+
+            </div>
+
+            <div class="reveal-container img-container" style="padding: 0;">
+
+                <img src="maizblanco.webp" alt="Milpa y maíz verde sano">
+
+                <div class="reveal-overlay">
+
+                    <i class="fa-solid fa-biohazard" style="font-size: 50px; margin-bottom: 15px;"></i>
+
+                    <h3 style="color: white;">Contaminación Genética</h3>
+
+                    <p style="color: white;">Pérdida de biodiversidad milenaria.</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Slide 6: Motivaciones 3.1.3 (Eduardo) INTERACTIVO -->
+
+    <div class="slide" id="slide-6">
+
+        <div class="presenter-badge"><i class="fa-solid fa-microphone-lines"></i> Expone: Eduardo D.</div>
+
+        <h2 class="slide-title">Motivaciones del <span>Investigador</span> (3.1.3)</h2>
+
+        <div class="two-column">
+
+            <div>
+
+                <h3>Vocación vs. Burocracia</h3>
+
+                <p><strong>Caso: Plagio de Tesis en la Suprema Corte</strong></p>
+
+                <ul>
+
+                    <li><span><strong style="color: var(--danger);">El Problema:</strong> Robar un trabajo universitario solo para conseguir un puesto de poder.</span></li>
+
+                    <li><span><strong style="color: var(--accent-gold);">El Impacto:</strong> Destruye la credibilidad del sistema de justicia completo.</span></li>
+
+                </ul>
+
+                <button class="interactive-btn" onclick="scanPlagio()"><i class="fa-solid fa-search"></i> Escanear Tesis Oficial</button>
+
+            </div>
+
+            <div>
+
+                <div class="doc-scanner" id="plagio-doc">
+
+                    <p>CAPÍTULO 1: MARCO TEÓRICO...</p>
+
+                    <p>La inoperancia de los sindicatos...</p>
+
+                    <p>En el artículo 123 constitucional...</p>
+
+                    <p>Lorem ipsum dolor sit amet, consectetur...</p>
+
+                    <div class="scan-line" id="scanner"></div>
+
+                    <div class="plagio-stamp" id="plagio-stamp">100% COPIADO</div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Slide 7: Tecno/Bioética 3.2.1 (Eduardo) INTERACTIVO -->
+
+    <div class="slide" id="slide-7">
+
+        <div class="presenter-badge"><i class="fa-solid fa-microphone-lines"></i> Expone: Eduardo D.</div>
+
+        <h2 class="slide-title">Tecnoética y <span>Bioética</span> (3.2.1)</h2>
+
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 20px;"><i class="fa-solid fa-hand-pointer"></i> Pasa el cursor sobre las tarjetas para ver el daño en México.</p>
+
+        <div class="flip-cards-container">
+
+            <div class="flip-card">
+
+                <div class="flip-card-inner">
+
+                    <div class="flip-card-front">
+
+                        <i class="fa-solid fa-mobile-screen"></i>
+
+                        <h3>Spyware Pegasus</h3>
+
+                        <p>Tecnoética</p>
+
+                    </div>
+
+                    <div class="flip-card-back">
+
+                        <h3>El Impacto</h3>
+
+                        <p>Gobierno espiando ilegalmente a periodistas. La tecnología usada para oprimir civiles.</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="flip-card">
+
+                <div class="flip-card-inner">
+
+                    <div class="flip-card-front">
+
+                        <i class="fa-solid fa-baby"></i>
+
+                        <h3>Rentar Vientres</h3>
+
+                        <p>Bioética</p>
+
+                    </div>
+
+                    <div class="flip-card-back">
+
+                        <h3>El Impacto</h3>
+
+                        <p>En Tabasco explotaron mujeres en pobreza. Si el bebé nacía enfermo, lo abandonaban.</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="flip-card">
+
+                <div class="flip-card-inner">
+
+                    <div class="flip-card-front">
+
+                        <i class="fa-solid fa-database"></i>
+
+                        <h3>Big Data Médica</h3>
+
+                        <p>Privacidad</p>
+
+                    </div>
+
+                    <div class="flip-card-back">
+
+                        <h3>El Impacto</h3>
+
+                        <p>Riesgo de que datos del gobierno se vendan a aseguradoras para discriminar pacientes.</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Slide 8: IA 3.2.2 (Enrique) INTERACTIVO -->
+
+    <div class="slide" id="slide-8">
+
+        <div class="presenter-badge"><i class="fa-solid fa-microphone-lines"></i> Expone: Enrique E.</div>
+
+        <h2 class="slide-title">Nosotros en <span>Sistemas</span> (3.2.2)</h2>
+
+        <div class="two-column">
+
+            <div>
+
+                <h3>El código NO es neutral</h3>
+
+                <p>Nuestros sistemas deciden quién obtiene créditos o entra a la universidad.</p>
+
+                <ul>
+
+                    <li><span><strong style="color: var(--danger);">El Problema:</strong> Entrenar IA con datos racistas o clasistas del pasado.</span></li>
+
+                    <li><span><strong style="color: var(--accent-gold);">El Impacto:</strong> La IA automatiza la discriminación. Decir "yo no fui, fue el algoritmo" es una excusa barata.</span></li>
+
+                </ul>
+
+                <button class="interactive-btn" onclick="runAITest()"><i class="fa-solid fa-code"></i> Ejecutar IA de Selección</button>
+
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+
+                <div class="img-container" style="height: 185px;">
+
+                    <img src="ciberseguridad-900x600.webp" alt="Código y Ciberseguridad IA">
+
+                </div>
+
+                <div class="ai-terminal" id="terminal-output">
+
+                    > root@itma-ia:~$ Esperando ejecución...
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Slide 9: Deontología 3.3 (Enrique) INTERACTIVO -->
+
+    <div class="slide" id="slide-9">
+
+        <div class="presenter-badge"><i class="fa-solid fa-microphone-lines"></i> Expone: Enrique E.</div>
+
+        <h2 class="slide-title">Deontología <span>Profesional</span> (3.3)</h2>
+
+        <div class="two-column">
+
+            <div>
+
+                <h3>Hacer lo correcto aunque nadie te vea</h3>
+
+                <p><strong>Caso en México: La Burocracia</strong></p>
+
+                <p>Imagínate que estás a cargo de los contratos del gobierno y una constructora te ofrece dinero por debajo de la mesa para ganar.</p>
+
+                <div class="dilemma-box">
+
+                    <p style="margin-bottom: 15px;">¿Qué decides como Ingeniero?</p>
+
+                    <button class="interactive-btn danger" onclick="chooseBribe(true)">Aceptar el "Moche"</button>
+
+                    <button class="interactive-btn" onclick="chooseBribe(false)">Rechazar (Integridad)</button>
+
+                    <div id="decision-result">...</div>
+
+                </div>
+
+            </div>
+
+            <div class="img-container">
+
+                <img src="5e3a7b10-38ad-11ea-aedd-d838b8dd976a.jpg" alt="Apretón de manos de negocios y acuerdos">
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Slide 10: UMAI 3.4 (Enrique) INTERACTIVO -->
+
+    <div class="slide" id="slide-10">
+
+        <div class="presenter-badge"><i class="fa-solid fa-microphone-lines"></i> Expone: Enrique E.</div>
+
+        <h2 class="slide-title">Código del <span>Ingeniero Mexicano</span> (3.4)</h2>
+
+        <p style="margin-bottom: 20px;">Lo que juramos al graduarnos según la UMAI (Clickea para abrir):</p>
+
+       
+
+        <div style="background: var(--bg-card); padding: 20px; border-radius: 8px;">
+
+            <div class="accordion-item">
+
+                <div class="accordion-header" onclick="toggleAccordion(1)">1. La vida humana es primero <i class="fa-solid fa-chevron-down"></i></div>
+
+                <div class="accordion-content" id="acc-1">Tienes derecho a negarte a construir un software o estructura si sabes que puede fallar y lastimar a alguien, por más dinero que se ahorre el jefe.</div>
+
+            </div>
+
+            <div class="accordion-item">
+
+                <div class="accordion-header" onclick="toggleAccordion(2)">2. Proteger la soberanía de México <i class="fa-solid fa-chevron-down"></i></div>
+
+                <div class="accordion-content" id="acc-2">No importar ni copiar tecnología extranjera a lo tonto si sabes que no va a funcionar en nuestro entorno o cultura.</div>
+
+            </div>
+
+            <div class="accordion-item" style="border-bottom: none;">
+
+                <div class="accordion-header" onclick="toggleAccordion(3)">3. Saber decir "NO" a las órdenes ilegales <i class="fa-solid fa-chevron-down"></i></div>
+
+                <div class="accordion-content" id="acc-3">Si tu jefe te pide hacer algo ilegal o no ético, tu deber es reportarlo. La excusa de "solo seguía órdenes" no te quita la culpa.</div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Slide 11: Dilemas 3.5 (Enrique) INTERACTIVO -->
+
+    <div class="slide" id="slide-11">
+
+        <div class="presenter-badge"><i class="fa-solid fa-microphone-lines"></i> Expone: Enrique E.</div>
+
+        <h2 class="slide-title">Dilemas <span>Profesionales</span> (3.5)</h2>
+
+        <div class="two-column">
+
+            <div>
+
+                <h3>Cuando la presión te gana</h3>
+
+                <p><strong>El Desastre: Río Sonora (Grupo México)</strong></p>
+
+                <ul>
+
+                    <li><span><strong style="color: var(--danger);">El Problema:</strong> Ingenieros operaron la mina sabiendo que tenía 55 fallas por presión del jefe.</span></li>
+
+                    <li><span><strong style="color: var(--danger);">El Encubrimiento:</strong> Ocultaron la noticia 25 horas para "proteger a la empresa".</span></li>
+
+                    <li><span><strong style="color: var(--accent-gold);">El Impacto:</strong> Envenenaron el río por un siglo porque "era más barato pagar la multa que arreglar la mina".</span></li>
+
+                </ul>
+
+                <button class="interactive-btn danger" onclick="spillToxic()"><i class="fa-solid fa-skull"></i> Obedecer al Jefe (Ocultar Fuga)</button>
+
+            </div>
+
+            <div style="text-align: center;">
+
+                <div class="river-container" id="river-box">
+
+                    <img src="rio_portada.jpg" alt="Río en la naturaleza">
+
+                    <h3 style="color: white; z-index: 10; position: relative;">Agua Limpia</h3>
+
+                    <div class="river-stats">Afectados: <span id="afectados-count">0</span></div>
+
+                </div>
+
+                <p style="font-size: 14px; margin-top: 10px; color: var(--text-muted);">Simulación del impacto por callar un error de ingeniería.</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Slide 12: Cierre -->
+
+    <div class="slide" id="slide-12">
+
+        <div class="presenter-badge"><i class="fa-solid fa-users"></i> Equipo 2</div>
+
+        <div style="text-align: center; max-width: 900px; margin: 0 auto;">
+
+            <i class="fa-solid fa-shield-halved" style="font-size: 60px; color: var(--accent-gold); margin-bottom: 30px;"></i>
+
+            <h2 style="font-size: 50px; margin-bottom: 30px;">Reflexión <span>Final</span></h2>
+
+            <p style="font-size: 24px; color: var(--text-muted); line-height: 1.8;">
+
+                La ética profesional no es una materia de relleno; es nuestro <strong>cortafuegos principal</strong>. Es la única línea de defensa que garantiza que la tecnología se use para ayudar a México y no para destruirlo.
+
+            </p>
+
+            <div style="margin-top: 50px;">
+
+                <p style="color: var(--accent-gold); font-size: 32px; font-weight: 600; font-family: 'Playfair Display', serif;">Gracias por su atención.</p>
+
+                <p style="font-size: 18px; margin-top: 10px;">¿Alguien tiene alguna pregunta?</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+</div>
+
+
+
+<!-- --- LÓGICA JS --- -->
+
+<script>
+
+    let currentSlideIndex = 1; const totalSlides = 12;
+
+
+
+    function updateSlides() {
+
+        document.querySelectorAll('.slide').forEach((slide, index) => {
+
+            slide.classList.toggle('active', index + 1 === currentSlideIndex);
+
+        });
+
+        document.getElementById('current-slide-num').innerText = currentSlideIndex;
+
+        resetInteractions();
+
+    }
+
+
+
+    function nextSlide() { if (currentSlideIndex < totalSlides) { currentSlideIndex++; updateSlides(); } }
+
+    function prevSlide() { if (currentSlideIndex > 1) { currentSlideIndex--; updateSlides(); } }
+
+    document.addEventListener('keydown', (e) => {
+
+        if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+
+        if (e.key === 'ArrowLeft') prevSlide();
+
+    });
+
+
+
+    function resetInteractions() {
+
+        if(currentSlideIndex !== 3) {
+
+            document.getElementById('conahcyt-box').innerHTML = `<p style="color: var(--success); font-weight: bold;"><i class="fa-solid fa-microscope"></i> Ciencia Libre</p><p>Los científicos investigan problemas reales buscando la verdad.</p>`;
+
+            document.getElementById('conahcyt-box').style.borderLeftColor = 'var(--accent-gold)';
+
+            isSecuestrada = false;
+
+        }
+
+        if(currentSlideIndex !== 4) document.getElementById('faltas-counter').innerText = "0";
+
+        if(currentSlideIndex !== 6) {
+
+            document.getElementById('scanner').classList.remove('animating');
+
+            document.getElementById('plagio-stamp').classList.remove('show');
+
+        }
+
+        if(currentSlideIndex !== 8) document.getElementById('terminal-output').innerHTML = "> root@itma-ia:~$ Esperando ejecución...";
+
+        if(currentSlideIndex !== 9) document.getElementById('decision-result').innerHTML = "...";
+
+        if(currentSlideIndex !== 11) {
+
+            document.getElementById('river-box').classList.remove('toxic');
+
+            document.getElementById('river-box').querySelector('h3').innerText = "Agua Limpia";
+
+            document.getElementById('afectados-count').innerText = "0";
+
+            clearInterval(toxicInterval);
+
+        }
+
+    }
+
+
+
+    // 3.1 Toggle Ciencia
+
+    let isSecuestrada = false;
+
+    function toggleCiencia() {
+
+        const box = document.getElementById('conahcyt-box');
+
+        if (!isSecuestrada) {
+
+            box.innerHTML = `<p style="color: var(--danger); font-weight: bold;"><i class="fa-solid fa-link"></i> Ciencia Secuestrada</p><p>Presupuesto condicionado. Pierden la libertad para investigar la verdad.</p>`;
+
+            box.style.borderLeftColor = 'var(--danger)';
+
+            isSecuestrada = true;
+
+        } else { resetInteractions(); }
+
+    }
+
+
+
+    // 3.1.1 Contador
+
+    function runCounter() {
+
+        let count = 0; const target = 40; const element = document.getElementById('faltas-counter');
+
+        const interval = setInterval(() => {
+
+            count++; element.innerText = count;
+
+            if (count >= target) { clearInterval(interval); element.style.color = 'var(--danger)'; }
+
+        }, 30);
+
+    }
+
+
+
+    // 3.1.3 Escáner Plagio
+
+    function scanPlagio() {
+
+        document.getElementById('plagio-stamp').classList.remove('show');
+
+        const scanner = document.getElementById('scanner');
+
+        scanner.classList.remove('animating');
+
+        void scanner.offsetWidth; // trigger reflow
+
+        scanner.classList.add('animating');
+
+        setTimeout(() => { document.getElementById('plagio-stamp').classList.add('show'); }, 2000);
+
+    }
+
+
+
+    // 3.2.2 Terminal IA
+
+    function runAITest() {
+
+        const term = document.getElementById('terminal-output');
+
+        term.innerHTML = "> Ejecutando Algoritmo de Selección...<br>";
+
+        setTimeout(() => { term.innerHTML += "> Cargando datos históricos de solicitantes...<br>"; }, 800);
+
+        setTimeout(() => { term.innerHTML += "<span style='color: yellow;'>> ALERTA: Sesgo socioeconómico detectado en base de datos.</span><br>"; }, 1800);
+
+        setTimeout(() => {
+
+            term.innerHTML += "<span style='color: var(--danger); font-weight: bold;'>> RESULTADO: Rechazando solicitantes vulnerables al 100%. Discriminación codificada.</span><br>";
+
+            term.scrollTop = term.scrollHeight;
+
+        }, 3000);
+
+    }
+
+
+
+    // 3.3 Decisión
+
+    function chooseBribe(accepted) {
+
+        const res = document.getElementById('decision-result');
+
+        if(accepted) {
+
+            res.innerHTML = `<span style="color: var(--danger);"><i class="fa-solid fa-handcuffs"></i> Corrupción aceptada. Sociedad vulnerada.</span>`;
+
+        } else {
+
+            res.innerHTML = `<span style="color: var(--success);"><i class="fa-solid fa-shield"></i> Integridad mantenida. Eres un buen ingeniero.</span>`;
+
+        }
+
+    }
+
+
+
+    // 3.4 Acordeón
+
+    function toggleAccordion(id) { document.getElementById(`acc-${id}`).classList.toggle('open'); }
+
+
+
+    // 3.5 Río Sonora
+
+    let toxicInterval;
+
+    function spillToxic() {
+
+        const river = document.getElementById('river-box');
+
+        river.classList.add('toxic');
+
+        river.querySelector('h3').innerText = "Río Tóxico (Ácido)";
+
+        let affected = 0;
+
+        const countSpan = document.getElementById('afectados-count');
+
+        clearInterval(toxicInterval);
+
+        toxicInterval = setInterval(() => {
+
+            affected += 150;
+
+            countSpan.innerText = affected.toLocaleString();
+
+            if(affected >= 22000) { clearInterval(toxicInterval); countSpan.innerText = "22,000+"; }
+
+        }, 20);
+
+    }
+
+</script>
+
+</body>
+
+</html>
