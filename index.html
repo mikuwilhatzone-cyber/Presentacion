@@ -392,6 +392,27 @@
 
         .river-stats { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.8); padding: 5px 10px; border-radius: 4px; font-family: monospace; font-size: 16px; z-index: 10;}
 
+        /* Esto se activa solo en pantallas menores a 768px (celulares y tablets) */
+@media (max-width: 768px) {
+    #presentation-container {
+        width: 95%; /* Que ocupe casi toda la pantalla */
+        padding: 10px;
+    }
+
+    .two-column {
+        display: flex;
+        flex-direction: column; /* En vez de lado a lado, pon las cosas una arriba de otra */
+    }
+
+    .img-container img {
+        width: 100%; /* Que las imágenes no se salgan de la pantalla */
+        height: auto;
+    }
+
+    h2 {
+        font-size: 1.5rem; /* Letra un poco más chica para que no se amontone */
+    }
+}
 
 
     </style>
