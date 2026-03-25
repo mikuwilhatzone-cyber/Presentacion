@@ -392,29 +392,34 @@
 
         .river-stats { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.8); padding: 5px 10px; border-radius: 4px; font-family: monospace; font-size: 16px; z-index: 10;}
 
-        /* Esto se activa solo en pantallas menores a 768px (celulares y tablets) */
-@media (max-width: 768px) {
+      @media screen and (max-width: 768px) {
     #presentation-container {
-        width: 95%; /* Que ocupe casi toda la pantalla */
-        padding: 10px;
+        width: 98% !important;
+        height: auto !important;
+        padding: 10px !important;
+        margin: 0 auto !important;
     }
 
     .two-column {
-        display: flex;
-        flex-direction: column; /* En vez de lado a lado, pon las cosas una arriba de otra */
+        display: block !important; /* Esto rompe las columnas y las pone una abajo de otra */
     }
 
-    .img-container img {
-        width: 100%; /* Que las imágenes no se salgan de la pantalla */
-        height: auto;
+    .img-container, .text-container {
+        width: 100% !important;
+        display: block !important;
+        margin-bottom: 20px;
     }
 
-    h2 {
-        font-size: 1.5rem; /* Letra un poco más chica para que no se amontone */
+    img {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+
+    h1, h2 {
+        font-size: 1.4rem !important; /* Ajusta el título para que no se corte */
+        word-wrap: break-word;
     }
 }
-
-
     </style>
 
 </head>
